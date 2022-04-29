@@ -7,15 +7,16 @@ const text = document.getElementById('text');
 const amount = document.getElementById('amount');
 
 const dataTransction = [
-    {id:1, text:"ค่าใช้จ่าย", amount:-500},
+    {id:1, text:"ค่าใช้จ่ายทั่วไป", amount:-500},
     {id:2, text:"ค่าหอ", amount:-4500},
     {id:3, text:"เงินเดือน", amount:+20000},
     {id:4, text:"งานเสริม", amount:+2000},
 ]
 
-const transactions = dataTransction;
+let transactions = dataTransction;
 
 function init(){
+    list.innerHTML = '';
     transactions.forEach(addDataToList);
     calculateMoney();
 }
@@ -26,7 +27,7 @@ function addDataToList(transactions){
     const item = document.createElement('li');
     const result = formatnumber(Math.abs(transactions.amount));
     item.classList.add(status);
-    item.innerHTML = `${transactions.text}<span>${symbol}${result}</span><button class="delete-btn">X</button>`;
+    item.innerHTML = `${transactions.text}<span>${symbol}${result}</span><button class="delete-btn" onclick="removeData(${transactions.id})">X</button>`;
     list.appendChild(item);
 }
 
@@ -47,6 +48,11 @@ function calculateMoney(){
     balance.innerText = `฿`+formatnumber(total);
     money_plus.innerText=`฿`+formatnumber(income);
     money_minus.innerText=`฿`+formatnumber(expense);
+}
+
+function removeData(id){
+    transactions = transactions.filter(transactions => transactions.id != id);
+    init();
 }
 
 function addTransaction(e){
