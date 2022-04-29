@@ -34,6 +34,10 @@ function formatnumber(n){
     return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 }
 
+function autoID(){
+    return Math.floor(Math.random() * 1000000)
+}
+
 function calculateMoney(){
     const amounts = transactions.map(transactions => transactions.amount);
     const total = amounts.reduce((result, item) => (result += item), 0).toFixed(2);
@@ -45,4 +49,23 @@ function calculateMoney(){
     money_minus.innerText=`฿`+formatnumber(expense);
 }
 
+function addTransaction(e){
+    e.preventDefault();
+    if(text.value.trim() == '' || amount.value.trim() == ''){
+        alert("คุณป้อนข้อมูลไม่ครบ !");
+    }else{
+        const data = {
+            id:autoID(),
+            text:text.value,
+            amount:+amount.value,
+        }
+        transactions.push(data);
+        addDataToList(data);
+        calculateMoney();
+        text.value = '';
+        amount.value = '';
+    }
+}
+
+form.addEventListener('submit', addTransaction);
 init();
